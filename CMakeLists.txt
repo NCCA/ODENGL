@@ -13,14 +13,11 @@ set(SOURCES ${PROJECT_SOURCE_DIR}/src/CollisionFunction.cpp
 			${PROJECT_SOURCE_DIR}/src/main.cpp  
 			${PROJECT_SOURCE_DIR}/src/MeshData.cpp  
 			${PROJECT_SOURCE_DIR}/src/NGLScene.cpp  
-			${PROJECT_SOURCE_DIR}/src/OpenGLWindow.cpp  
 			${PROJECT_SOURCE_DIR}/src/PhysicsWorld.cpp  
 			${PROJECT_SOURCE_DIR}/src/RigidBody.cpp
-
 			${PROJECT_SOURCE_DIR}/include/Geom.h  
 			${PROJECT_SOURCE_DIR}/include/MeshData.h  
 			${PROJECT_SOURCE_DIR}/include/NGLScene.h  
-			${PROJECT_SOURCE_DIR}/include/OpenGLWindow.h  
 			${PROJECT_SOURCE_DIR}/include/PhysicsWorld.h  
 			${PROJECT_SOURCE_DIR}/include/RigidBody.h
 )
