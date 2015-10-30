@@ -147,6 +147,7 @@ void PhysicsWorld::reset()
   {
   case SIMPLE : m_space=dSimpleSpaceCreate(0); break;
   case HASH :   m_space=dHashSpaceCreate(0); break;
+  default : break;
   }
   m_groundPlaneID=dCreatePlane(m_space,m_gpNormal.m_x,m_gpNormal.m_y,m_gpNormal.m_z,m_gpNormal.m_w);
 }

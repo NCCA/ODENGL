@@ -37,7 +37,7 @@ NGLScene::NGLScene()
   m_spinXFace=0;
   m_spinYFace=0;
 
-  m_physics = new PhysicsWorld(PhysicsWorld::HASH);
+  m_physics.reset( new PhysicsWorld(PhysicsWorld::HASH));
   m_physics->setMaxContacts(32);
   m_physics->setGravity(ngl::Vec3(0,-3,0));
   m_physics->createGroundPlane(ngl::Vec4(0,1,0,0));
@@ -153,13 +153,12 @@ NGLScene::~NGLScene()
   std::cout<<"Shutting down NGL, removing VAO's and Shaders\n";
 }
 
-void NGLScene::resizeGL(int _w, int _h)
+void NGLScene::resizeGL(QResizeEvent *_event)
 {
-  // set the viewport for openGL
-  glViewport(0,0,_w,_h);
+  m_width=_event->size().width()*devicePixelRatio();
+  m_height=_event->size().height()*devicePixelRatio();
   // now set the camera size values as the screen size has changed
-  m_cam->setShape(45,(float)_w/_h,0.05f,350.0f);
-  update();
+  m_cam.setShape(45.0f,(float)width()/height(),0.05f,350.0f);
 }
 
 
@@ -192,10 +191,10 @@ void NGLScene::initializeGL()
   ngl::Vec3 to(0,0,0);
   ngl::Vec3 up(0,1,0);
   // now load to our new camera
-  m_cam= new ngl::Camera(from,to,up);
+  m_cam.set(from,to,up);
   // set the shape using FOV 45 Aspect Ratio based on Width and Height
   // The final two are near and far clipping planes of 0.5 and 10
-  m_cam->setShape(50,(float)720.0/576.0,0.05,350);
+  m_cam.setShape(50,(float)720.0/576.0,0.05,350);
   //shader->setShaderParam3f("viewerPos",m_cam->getEye().m_x,m_cam->getEye().m_y,m_cam->getEye().m_z);
   // now create our light this is done after the camera so we can pass the
   // transpose of the projection matrix to the light to do correct eye space
@@ -210,10 +209,10 @@ void NGLScene::initializeGL()
   prim->createSphere("sphere",0.5,40);
  // prim->createTrianglePlane("plane",140,140,140,140,ngl::Vec3(0,1,0));
   prim->createLineGrid("plane",140,140,80);
-  m_teapotMesh = new ngl::Obj("models/teapot.obj");
+  m_teapotMesh.reset(  new ngl::Obj("models/teapot.obj"));
   m_teapotMesh->createVAO();
 
-  m_appleMesh = new ngl::Obj("models/apple.obj");
+  m_appleMesh.reset (new ngl::Obj("models/apple.obj"));
   m_appleMesh->createVAO();
   m_appleMesh->calcBoundingSphere();
   // we need to add the  mesh to the collision data for ODE
@@ -243,8 +242,8 @@ void NGLScene::loadMatricesToShader()
   ngl::Mat3 normalMatrix;
   ngl::Mat4 M;
   M=m_bodyTransformMatrix*m_globalTransformMatrix;
-  MV=  M*m_cam->getViewMatrix();
-  MVP= M*m_cam->getVPMatrix();
+  MV=  M*m_cam.getViewMatrix();
+  MVP= M*m_cam.getVPMatrix();
   normalMatrix=MV;
   normalMatrix.inverse();
   shader->setRegisteredUniform("MVP",MVP);
@@ -256,13 +255,12 @@ void NGLScene::paintGL()
 {
   // clear the screen and depth buffer
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+  glViewport(0,0,m_width,m_height);
   // grab an instance of the shader manager
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
   (*shader)["nglDiffuseShader"]->use();
 
   // Rotation based on the mouse position for our global transform
-  ngl::Transformation trans;
   ngl::Mat4 rotX;
   ngl::Mat4 rotY;
   // create the rotation matrices
