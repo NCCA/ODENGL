@@ -3,7 +3,7 @@
 #include <ngl/Singleton.h>
 #include <ngl/Obj.h>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 //----------------------------------------------------------------------------------------------------------------------
 /// @brief this stores the actual mesh data and index value
@@ -63,7 +63,7 @@ protected :
   //----------------------------------------------------------------------------------------------------------------------
   /// @brief the map to store our structures
   //----------------------------------------------------------------------------------------------------------------------
-  std::map<std::string,collisionMesh *> m_collisionData;
+  std::unordered_map<std::string,collisionMesh *> m_collisionData;
 
 };
 

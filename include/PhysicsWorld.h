@@ -218,8 +218,6 @@ class PhysicsWorld
     /// @brief contact surface layers set to default values but needed for reset
     //----------------------------------------------------------------------------------------------------------------------
     float m_contactSurfaceLayer;
-
-
 };
 
 #endif
