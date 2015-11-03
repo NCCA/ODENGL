@@ -34,7 +34,7 @@ void MeshData::addMesh(const std::string &_name,ngl::Obj *_m)
   }
 
   // finally store our data
-  m_collisionData[_name]=m;
+  m_collisionData[_name].reset(m);
 
 }
 
@@ -45,12 +45,12 @@ collisionMesh * MeshData::getMesh(const std::string &_name)
   // make sure we have a valid set of geometry
   if(mesh!=m_collisionData.end())
   {
-    return mesh->second;
+    return mesh->second.get();
   }
   else
   {
     std::cerr<<"Mesh not in mesh collection \n";
-    return 0;
+    return nullptr;
   }
 }
 

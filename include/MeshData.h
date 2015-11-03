@@ -4,6 +4,7 @@
 #include <ngl/Obj.h>
 #include <vector>
 #include <unordered_map>
+#include <memory>
 
 //----------------------------------------------------------------------------------------------------------------------
 /// @brief this stores the actual mesh data and index value
@@ -63,7 +64,7 @@ protected :
   //----------------------------------------------------------------------------------------------------------------------
   /// @brief the map to store our structures
   //----------------------------------------------------------------------------------------------------------------------
-  std::unordered_map<std::string,collisionMesh *> m_collisionData;
+  std::unordered_map<std::string,std::unique_ptr<collisionMesh >> m_collisionData;
 
 };
 
