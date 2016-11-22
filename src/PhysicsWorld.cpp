@@ -52,7 +52,7 @@ PhysicsWorld::PhysicsWorld(ngl::Vec3 _center,ngl::Vec3 _extents, int _depth)
   dInitODE2(0);
   m_world=dWorldCreate();
   // a dVector3 is just a float [4] so we can convert easily
-  m_space=dQuadTreeSpaceCreate(0,_center.m_openGL,_extents.m_openGL,_depth);
+  m_space=dQuadTreeSpaceCreate(0,&_center.m_openGL[0],&_extents.m_openGL[0],_depth);
   // set some useful initial params
   m_linearDamping=0.0001;
   m_angularDamping=0.005;

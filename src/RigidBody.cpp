@@ -38,7 +38,7 @@ void RigidBody::setTorque(const ngl::Vec3 &_p)
 void RigidBody::setRotation(const ngl::Mat4 &_r)
 {
   // this takes a matrix which is an array of 4*4 floats
-  dBodySetRotation(m_id,_r.m_openGL);
+  dBodySetRotation(m_id,&_r.m_openGL[0]);
 }
 
 void RigidBody::setQuaternion(const ngl::Quaternion &_q)

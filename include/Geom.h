@@ -1,5 +1,5 @@
-#ifndef GEOM_H__
-#define GEOM_H__
+#ifndef GEOM_H_
+#define GEOM_H_
 #include <ode/ode.h>
 #include <ngl/Vec4.h>
 #include <ngl/Obj.h>

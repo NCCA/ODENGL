@@ -1,5 +1,5 @@
-#ifndef MESHDATA_H__
-#define MESHDATA_H__
+#ifndef MESHDATA_H_
+#define MESHDATA_H_
 #include <ngl/Singleton.h>
 #include <ngl/Obj.h>
 #include <vector>
