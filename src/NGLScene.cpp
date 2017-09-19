@@ -161,12 +161,12 @@ void NGLScene::initializeGL()
   // grab an instance of shader manager
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
   (*shader)["nglToonShader"]->use();
-  shader->setShaderParam4f("Colour",1,1,1,1);
+  shader->setUniform("Colour",1.0f,1.0f,1.0f,1.0f);
 
   (*shader)["nglDiffuseShader"]->use();
-  shader->setShaderParam4f("Colour",1,1,0,1);
-  shader->setShaderParam3f("lightPos",1,1,1);
-  shader->setShaderParam4f("lightDiffuse",1,1,1,1);
+  shader->setUniform("Colour",1.0f,1.0f,0.0f,1.0f);
+  shader->setUniform("lightPos",1.0f,1.0f,1.0f);
+  shader->setUniform("lightDiffuse",1.0f,1.0f,1.0f,1.0f);
 
   // Now we will create a basic Camera from the graphics library
   // This is a static camera so it only needs to be set once
@@ -230,8 +230,8 @@ void NGLScene::loadMatricesToShader()
   MVP= M*m_cam.getVPMatrix();
   normalMatrix=MV;
   normalMatrix.inverse();
-  shader->setRegisteredUniform("MVP",MVP);
-  shader->setRegisteredUniform("normalMatrix",normalMatrix);
+  shader->setUniform("MVP",MVP);
+  shader->setUniform("normalMatrix",normalMatrix);
 
 }
 
@@ -274,17 +274,17 @@ void NGLScene::paintGL()
     loadMatricesToShader();
     if(begin->getGeoType() == BOX )
     {
-      shader->setRegisteredUniform("Colour",1.0f,0.0f,0.0f,1.0f);
+      shader->setUniform("Colour",1.0f,0.0f,0.0f,1.0f);
       prim->draw("cube");
     }
     else if(begin->getGeoType() == SPHERE)
     {
-      shader->setRegisteredUniform("Colour",0.0f,0.0f,1.0f,1.0f);
+      shader->setUniform("Colour",0.0f,0.0f,1.0f,1.0f);
       prim->draw("sphere");
     }
     else if(begin->getGeoType() == TRIANGLEMESH)
     {
-      shader->setRegisteredUniform("Colour",1.0f,1.0f,0.0f,1.0f);
+      shader->setUniform("Colour",1.0f,1.0f,0.0f,1.0f);
 
       begin->setMeshTransfomation();
       if(begin->getName()=="teapot")
@@ -295,14 +295,14 @@ void NGLScene::paintGL()
       }
       else if(begin->getName() == "apple")
       {
-        shader->setRegisteredUniform("Colour",0.0f,0.6f,0.f,1.f);
+        shader->setUniform("Colour",0.0f,0.6f,0.f,1.f);
 
         m_appleMesh->draw();
       }
     }
     ++begin;
   }
-  shader->setShaderParam4f("Colour",1.0f,1.0f,1.0f,1.0f);
+  shader->setUniform("Colour",1.0f,1.0f,1.0f,1.0f);
 
   m_bodyTransformMatrix.identity();
   loadMatricesToShader();
@@ -348,24 +348,23 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
 
   default : break;
   }
-  // finally update the GLWindow and re-draw
   //if (isExposed())
-    update();
+  update();
 }
 
-void NGLScene::timerEvent(QTimerEvent *_e)
+void NGLScene::timerEvent(QTimerEvent *)
 {
   if(m_animate == true)
   {
     m_physics->doCollisions();
-    m_physics->quickStep(0.05);
+    m_physics->quickStep(0.05f);
     update();
   }
 }
 void NGLScene::stepAnimation()
 {
   m_physics->doCollisions();
-  m_physics->quickStep(0.05);
+  m_physics->quickStep(0.05f);
   update();
 }
 //----------------------------------------------------------------------------------------------------------------------
